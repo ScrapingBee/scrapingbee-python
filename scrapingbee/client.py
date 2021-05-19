@@ -39,12 +39,5 @@ class ScrapingBeeClient:
     def post(self, url: str, params: dict = None, data: dict = None, headers: dict = None,
              cookies: dict = None, **kwargs
              ) -> Response:
-        return self.request(
-            'POST',
-            url,
-            params=params,
-            data=data,
-            headers=headers,
-            cookies=cookies,
-            **kwargs
-        )
+        return self.request('POST', url, params=params, data=data, headers=headers,
+                            cookies=cookies, **kwargs)
