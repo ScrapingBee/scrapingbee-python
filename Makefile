@@ -9,3 +9,6 @@ lint:  ## Lint code
 
 test:  ## Run tests
 	pytest tests/
+
+build:  ## Build a binary wheel and a source tarball
+	python setup.py sdist bdist_wheel

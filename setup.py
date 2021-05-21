@@ -8,6 +8,7 @@ setup(
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     author='Ari Bajo Rouvinen',
+    author_email='arimbr@gmail.com',
     maintainer='Pierre de Wulf',
     maintainer_email='hello@scrapingbee.com',
     license='MIT',
