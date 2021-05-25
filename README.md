@@ -41,3 +41,7 @@ Signup to ScrapingBee to [get your API key](https://app.scrapingbee.com/account/
 ScrapingBee takes various parameters to render JavaScript, execute a custom JavaScript script, use a premium proxy from a specific geolocation and more. You can find all the supported parameters on [ScrapingBee's documentation](https://www.scrapingbee.com/documentation/).
 
 You can send custom cookies and headers like you would normally do with the requests library.
+
+## Using ScrapingBee with Scrapy
+
+Scrapy is the most popular Python web scraping framework. You can easily [integrate ScrapingBee's API with the Scrapy middleware](https://github.com/ScrapingBee/scrapy-scrapingbee).
