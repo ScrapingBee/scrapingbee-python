@@ -21,13 +21,15 @@ Signup to ScrapingBee to [get your API key](https://app.scrapingbee.com/account/
 ```python
 >>> from scrapingbee import ScrapingBeeClient
 
->>> scrapingbee = ScrapingBeeClient(api_key='REPLACE-WITH-YOUR-API-KEY')
+>>> client = ScrapingBeeClient(api_key='REPLACE-WITH-YOUR-API-KEY')
 
->>> response = scrapingbee.get('https://www.scrapingbee.com', params={
+>>> response = client.get('https://www.scrapingbee.com', params={
     # Execute JavaScript code with a Headless Browser
     'render_js': True,
-    # Wait 10 seconds before returning the response
-    'wait': 10000,
+    # Scroll once
+    'js_scroll': True,
+    # Wait 5 seconds before returning the response
+    'wait': 5000,
     # Use a premium proxy
     'premium_proxy': True,
     # Use a premium proxy in France
