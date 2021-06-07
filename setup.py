@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='scrapingbee',
-    version='0.0.1',
+    version='1.0.1',
     url='https://github.com/scrapingbee/scrapingbee-python',
     description='ScrapingBee Python SDK',
     long_description=open('README.md').read(),
