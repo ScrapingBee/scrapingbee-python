@@ -3,6 +3,7 @@ from scrapingbee.utils import (
     process_js_snippet,
     process_headers,
     process_cookies,
+    process_extract_rules,
     process_params,
     get_scrapingbee_url
 )
@@ -35,6 +36,14 @@ def test_process_cookies():
         'name_2': 'value_2'
     })
     assert output == 'name_1=value_1;name_2=value_2'
+
+
+def test_process_extract_rules():
+    '''It should format extract_rules to a stringified JSON'''
+    output = process_extract_rules({
+        'title': '.title'
+    })
+    assert output == '{"title": ".title"}'
 
 
 def test_process_params():

@@ -27,7 +27,7 @@ Signup to ScrapingBee to [get your API key](https://app.scrapingbee.com/account/
 
 >>> client = ScrapingBeeClient(api_key='REPLACE-WITH-YOUR-API-KEY')
 
->>> response = client.get('https://www.scrapingbee.com', params={
+>>> response = client.get('https://www.scrapingbee.com/blog/', params={
     # Execute JavaScript code with a Headless Browser
     'render_js': True,
     # Scroll once
@@ -38,6 +38,8 @@ Signup to ScrapingBee to [get your API key](https://app.scrapingbee.com/account/
     'premium_proxy': True,
     # Use a premium proxy in France
     'country_code': 'fr',
+    # Use some data extraction rules
+    'extract_rules': {'title': 'h1'},
 })
 
 >>> response.text

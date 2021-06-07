@@ -1,4 +1,5 @@
 import base64
+import json
 import urllib
 
 
@@ -24,6 +25,16 @@ def process_cookies(cookies: dict) -> str:
         return cookies
 
 
+def process_extract_rules(extract_rules: dict) -> str:
+    if isinstance(extract_rules, dict):
+        return json.dumps(extract_rules)
+    elif isinstance(extract_rules, str):
+        json.loads(extract_rules)
+        return extract_rules
+    else:
+        raise ValueError("extract_rules must be a dict or a stringified JSON")
+
+
 def process_params(params: dict) -> dict:
     new_params = {}
     for k, v in params.items():
@@ -35,6 +46,8 @@ def process_params(params: dict) -> dict:
             new_params[k] = process_js_snippet(v)
         elif k == 'cookies':
             new_params[k] = process_cookies(v)
+        elif k == 'extract_rules':
+            new_params[k] = process_extract_rules(v)
         else:
             new_params[k] = v
     return new_params
