@@ -70,6 +70,22 @@ def test_get_with_cookies(mock_request, client):
 
 
 @mock.patch('scrapingbee.client.request')
+def test_get_with_extract_rules(mock_request, client):
+    '''It should format the extract_rules and add them to the url'''
+    client.get('https://httpbin.org', params={
+        'extract_rules': {'title': '.title'}
+    })
+
+    mock_request.assert_called_with(
+        'GET',
+        'https://app.scrapingbee.com/api/v1/'
+        '?api_key=API_KEY&url=https%3A//httpbin.org&extract_rules={"title": ".title"}',
+        data=None,
+        headers=None,
+    )
+
+
+@mock.patch('scrapingbee.client.request')
 def test_post(mock_request, client):
     '''It should make a POST request with some data'''
     client.post('https://httpbin.org', data={'KEY_1': 'VALUE_1'})
