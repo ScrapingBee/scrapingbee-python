@@ -74,8 +74,8 @@ def test_get_with_extract_rules(mock_request, client):
     '''It should format the extract_rules and add them to the url'''
     client.get('https://httpbin.org', params={
         'extract_rules': {
-            "title" : "h1",
-            "subtitle" : "#subtitle"
+            "title": "h1",
+            "subtitle": "#subtitle"
         }
     })
 
