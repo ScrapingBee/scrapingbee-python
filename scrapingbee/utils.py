@@ -27,10 +27,7 @@ def process_cookies(cookies: dict) -> str:
 
 def process_extract_rules(extract_rules: dict) -> str:
     if isinstance(extract_rules, dict):
-        return json.dumps(extract_rules)
-    elif isinstance(extract_rules, str):
-        json.loads(extract_rules)
-        return extract_rules
+        return urllib.parse.quote(json.dumps(extract_rules))
     else:
         raise ValueError("extract_rules must be a dict or a stringified JSON")
 

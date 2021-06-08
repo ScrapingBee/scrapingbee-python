@@ -43,7 +43,7 @@ def test_process_extract_rules():
     output = process_extract_rules({
         'title': '.title'
     })
-    assert output == '{"title": ".title"}'
+    assert output == '%7B%22title%22%3A%20%22.title%22%7D'
 
 
 def test_process_params():
