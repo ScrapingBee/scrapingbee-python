@@ -27,20 +27,31 @@ Signup to ScrapingBee to [get your API key](https://app.scrapingbee.com/account/
 
 >>> client = ScrapingBeeClient(api_key='REPLACE-WITH-YOUR-API-KEY')
 
->>> response = client.get('https://www.scrapingbee.com/blog/', params={
-    # Execute JavaScript code with a Headless Browser
-    'render_js': True,
-    # Scroll once
-    'js_scroll': True,
-    # Wait 5 seconds before returning the response
-    'wait': 5000,
-    # Use a premium proxy
-    'premium_proxy': True,
-    # Use a premium proxy in France
-    'country_code': 'fr',
-    # Use some data extraction rules
-    'extract_rules': {'title': 'h1'},
-})
+>>> response = client.get(
+    'https://www.scrapingbee.com/blog/', 
+    params={
+        # Execute JavaScript code with a Headless Browser
+        'render_js': True,
+        # Scroll once
+        'js_scroll': True,
+        # Wait 5 seconds before returning the response
+        'wait': 5000,
+        # Use a premium proxy
+        'premium_proxy': True,
+        # Use a premium proxy in France
+        'country_code': 'fr',
+        # Use some data extraction rules
+        'extract_rules': {'title': 'h1'},
+    },
+    headers={
+        # Forward custom headers to the target website
+        "key_1": "value_1"
+    },
+    cookies={
+        # Forward custom cookies to the target website
+        "name_1": "value_1"
+    }
+)
 
 >>> response.text
 '<!DOCTYPE html><html lang="en"><head>...'
