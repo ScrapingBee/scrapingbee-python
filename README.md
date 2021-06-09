@@ -27,26 +27,58 @@ Signup to ScrapingBee to [get your API key](https://app.scrapingbee.com/account/
 
 >>> client = ScrapingBeeClient(api_key='REPLACE-WITH-YOUR-API-KEY')
 
->>> response = client.get('https://www.scrapingbee.com/blog/', params={
-    # Execute JavaScript code with a Headless Browser
-    'render_js': True,
-    # Scroll once
-    'js_scroll': True,
-    # Wait 5 seconds before returning the response
-    'wait': 5000,
-    # Use a premium proxy
-    'premium_proxy': True,
-    # Use a premium proxy in France
-    'country_code': 'fr',
-    # Use some data extraction rules
-    'extract_rules': {'title': 'h1'},
-})
-
+>>> response = client.get(
+    'https://www.scrapingbee.com/blog/', 
+    params={
+        # Block ads on the page you want to scrape	
+        'block_ads': False,
+        # Block images and CSS on the page you want to scrape	
+        'block_ressources': True,
+        # Premium proxy geolocation
+        'country_code': '',
+        # Control the device the request will be sent from	
+        'device': 'desktop',
+        # Use some data extraction rules
+        'extract_rules': {'title': 'h1'},
+        # Wrap response in JSON
+        'json_response': False,
+        # JavaScript snippet to execute (clicking on a button, scrolling ...)
+        'js_snippet': '',
+        # Scrolling to the end of the page before returning your results
+        'js_scroll': False,
+        # The time to wait between each scroll	
+        'js_scroll_wait': 1000,
+        # The number of scrolls you want to make	
+        'js_scroll_count': 1,
+        # Use premium proxies to bypass difficult to scrape websites (10-25 credits/request)
+        'premium_proxy': False,
+        # Execute JavaScript code with a Headless Browser (5 credits/request)
+        'render_js': True,
+        # Return the original HTML before the JavaScript rendering	
+        'return_page_source': False,
+        # Transparently return the same HTTP code of the page requested.
+        'transparent_status_code': False,
+        # Wait, in miliseconds, before returning the response
+        'wait': 0,
+        # Wait for CSS selector before returning the response, ex ".title"
+        'wait_for': ''
+    },
+    headers={
+        # Forward custom headers to the target website
+        "key": "value"
+    },
+    cookies={
+        # Forward custom cookies to the target website
+        "name": "value"
+    }
+)
 >>> response.text
 '<!DOCTYPE html><html lang="en"><head>...'
 ```
 
-ScrapingBee takes various parameters to render JavaScript, execute a custom JavaScript script, use a premium proxy from a specific geolocation and more. You can find all the supported parameters on [ScrapingBee's documentation](https://www.scrapingbee.com/documentation/).
+ScrapingBee takes various parameters to render JavaScript, execute a custom JavaScript script, use a premium proxy from a specific geolocation and more. 
+
+You can find all the supported parameters on [ScrapingBee's documentation](https://www.scrapingbee.com/documentation/).
 
 You can send custom cookies and headers like you would normally do with the requests library.
 
