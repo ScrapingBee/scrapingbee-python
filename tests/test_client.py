@@ -3,6 +3,7 @@ from unittest import mock
 import pytest
 
 from scrapingbee import ScrapingBeeClient
+from scrapingbee.default_headers import default_headers
 
 
 @pytest.fixture(scope='module')
@@ -20,7 +21,7 @@ def test_get(mock_request, client):
         'https://app.scrapingbee.com/api/v1/'
         '?api_key=API_KEY&url=https%3A//httpbin.org',
         data=None,
-        headers=None
+        headers=default_headers
     )
 
 
@@ -34,7 +35,7 @@ def test_get_with_params(mock_request, client):
         'https://app.scrapingbee.com/api/v1/'
         '?api_key=API_KEY&url=https%3A//httpbin.org&render_js=True',
         data=None,
-        headers=None,
+        headers=default_headers,
     )
 
 
@@ -48,7 +49,8 @@ def test_get_with_headers(mock_request, client):
         'https://app.scrapingbee.com/api/v1/'
         '?api_key=API_KEY&url=https%3A//httpbin.org&forward_headers=True',
         data=None,
-        headers={'Spb-Content-Type': 'text/html; charset=utf-8'},
+        headers={'Spb-Content-Type': 'text/html; charset=utf-8',
+                 **default_headers},
     )
 
 
@@ -65,7 +67,7 @@ def test_get_with_cookies(mock_request, client):
         'https://app.scrapingbee.com/api/v1/'
         '?api_key=API_KEY&url=https%3A//httpbin.org&cookies=name_1=value_1;name_2=value_2',
         data=None,
-        headers=None,
+        headers=default_headers,
     )
 
 
@@ -86,7 +88,7 @@ def test_get_with_extract_rules(mock_request, client):
         'extract_rules=%7B%22title%22%3A%20%22h1%22%2C%20%22'
         'subtitle%22%3A%20%22%23subtitle%22%7D',
         data=None,
-        headers=None,
+        headers=default_headers,
     )
 
 
@@ -99,5 +101,5 @@ def test_post(mock_request, client):
         'POST',
         'https://app.scrapingbee.com/api/v1/?api_key=API_KEY&url=https%3A//httpbin.org',
         data={'KEY_1': 'VALUE_1'},
-        headers=None
+        headers=default_headers
     )

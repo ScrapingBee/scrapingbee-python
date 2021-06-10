@@ -1,7 +1,7 @@
 from requests import request, Response
 
+from .default_headers import default_headers
 from .utils import get_scrapingbee_url, process_headers
-from .__version__ import __version__
 
 
 class ScrapingBeeClient:
@@ -22,8 +22,7 @@ class ScrapingBeeClient:
             params['forward_headers'] = True
         else:
             headers = {}
-        # Add User-Agent identifying sdk
-        headers["User-Agent"] = f"ScrapingBee-Python/{__version__}"
+        headers.update(default_headers)
 
         # Add cookies to params
         if cookies:
