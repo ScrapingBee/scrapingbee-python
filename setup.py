@@ -1,8 +1,10 @@
 from setuptools import setup
 
+from scrapingbee.__version__ import __version__
+
 setup(
     name='scrapingbee',
-    version='1.1.4',
+    version=__version__,
     url='https://github.com/scrapingbee/scrapingbee-python',
     description='ScrapingBee Python SDK',
     long_description=open('README.md').read(),
