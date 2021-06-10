@@ -1,5 +1,6 @@
 from requests import request, Response
 
+from .default_headers import default_headers
 from .utils import get_scrapingbee_url, process_headers
 
 
@@ -19,6 +20,9 @@ class ScrapingBeeClient:
         if headers:
             headers = process_headers(headers)
             params['forward_headers'] = True
+        else:
+            headers = {}
+        headers.update(default_headers)
 
         # Add cookies to params
         if cookies:

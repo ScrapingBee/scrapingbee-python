@@ -1,8 +1,15 @@
+import os
+
 from setuptools import setup
+
+about = {}
+here = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(here, 'scrapingbee', '__version__.py'), 'r', encoding='utf-8') as f:
+    exec(f.read(), about)
 
 setup(
     name='scrapingbee',
-    version='1.1.4',
+    version=about['__version__'],
     url='https://github.com/scrapingbee/scrapingbee-python',
     description='ScrapingBee Python SDK',
     long_description=open('README.md').read(),
