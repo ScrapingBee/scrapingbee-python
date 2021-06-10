@@ -1,7 +1,7 @@
 from requests import request, Response
 
 from .utils import get_scrapingbee_url, process_headers
-from .version import __version__
+from .__version__ import __version__
 
 
 class ScrapingBeeClient:
