@@ -56,12 +56,20 @@ Signup to ScrapingBee to [get your API key](https://app.scrapingbee.com/account/
         'render_js': True,
         # Return the original HTML before the JavaScript rendering	
         'return_page_source': False,
+        # Return page screenshot as a png image
+        'screenshot': False,
+        # Take a full page screenshot without the window limitation
+        'screenshot_full_page': False,
         # Transparently return the same HTTP code of the page requested.
         'transparent_status_code': False,
         # Wait, in miliseconds, before returning the response
         'wait': 0,
         # Wait for CSS selector before returning the response, ex ".title"
-        'wait_for': ''
+        'wait_for': '',
+        # Set the browser window width in pixel
+        'window_width': 1920,
+        # Set the browser window height in pixel
+        'window_height': 1080
     },
     headers={
         # Forward custom headers to the target website
@@ -81,6 +89,32 @@ ScrapingBee takes various parameters to render JavaScript, execute a custom Java
 You can find all the supported parameters on [ScrapingBee's documentation](https://www.scrapingbee.com/documentation/).
 
 You can send custom cookies and headers like you would normally do with the requests library.
+
+## Screenshot
+
+Here a little exemple on how to retrieve and store a screenshot from the ScrapingBee blog in its mobile resolution.
+
+```python
+>>> from scrapingbee import ScrapingBeeClient
+
+>>> client = ScrapingBeeClient(api_key='REPLACE-WITH-YOUR-API-KEY')
+
+>>> response = client.get(
+    'https://www.scrapingbee.com/blog/', 
+    params={
+        # Take a screenshot
+        'screenshot': True,
+        # Specify that we need the full height
+        'screenshot_full_page': True,
+        # Specify a mobile width in pixel
+        'window_width': 375
+    }
+)
+
+>>> if response.ok:
+        with open("./scrapingbee_mobile.png", "wb") as f:
+            f.write(response.content)
+```
 
 ## Using ScrapingBee with Scrapy
 
