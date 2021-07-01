@@ -57,9 +57,9 @@ Signup to ScrapingBee to [get your API key](https://app.scrapingbee.com/account/
         # Return the original HTML before the JavaScript rendering	
         'return_page_source': False,
         # Return page screenshot as a png image
-        'screenshot': True,
+        'screenshot': False,
         # Take a full page screenshot without the window limitation
-        'screenshot_full_page': True,
+        'screenshot_full_page': False,
         # Transparently return the same HTTP code of the page requested.
         'transparent_status_code': False,
         # Wait, in miliseconds, before returning the response
@@ -67,9 +67,9 @@ Signup to ScrapingBee to [get your API key](https://app.scrapingbee.com/account/
         # Wait for CSS selector before returning the response, ex ".title"
         'wait_for': '',
         # Set the browser window width in pixel
-        'window_width': 800,
+        'window_width': 1920,
         # Set the browser window height in pixel
-        'window_height': 600
+        'window_height': 1080
     },
     headers={
         # Forward custom headers to the target website
