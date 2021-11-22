@@ -2,7 +2,7 @@
 
 A new package is automatically uploaded to PyPI when a new tag is pushed to Github. To release a new version follow the steps:
 
-1. Update the version number X.X.X in [setup.py](setup.py) and push the change.
+1. Update the version number X.X.X in [scrapingbee/__version__.py](scrapingbee/__version__.py) and push the change.
 
 2. Create a tag with the same version number.
 

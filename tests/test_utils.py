@@ -1,9 +1,9 @@
 from scrapingbee.utils import (
     process_url,
     process_js_snippet,
+    process_json_stringify_param,
     process_headers,
     process_cookies,
-    process_extract_rules,
     process_params,
     get_scrapingbee_url
 )
@@ -40,10 +40,20 @@ def test_process_cookies():
 
 def test_process_extract_rules():
     '''It should format extract_rules to a stringified JSON'''
-    output = process_extract_rules({
+    output = process_json_stringify_param({
         'title': '.title'
-    })
+    }, 'extract_rules')
     assert output == '%7B%22title%22%3A%20%22.title%22%7D'
+
+
+def test_process_js_scenario():
+    '''It should format js_scenario to a stringified JSON'''
+    output = process_json_stringify_param({
+        'instructions': [
+            {"click": "#buttonId"}
+        ]
+    }, 'js_scenario')
+    assert output == '%7B%22instructions%22%3A%20%5B%7B%22click%22%3A%20%22%23buttonId%22%7D%5D%7D'
 
 
 def test_process_params():
