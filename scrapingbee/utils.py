@@ -25,11 +25,11 @@ def process_cookies(cookies: dict) -> str:
         return cookies
 
 
-def process_extract_rules(extract_rules: dict) -> str:
-    if isinstance(extract_rules, dict):
-        return urllib.parse.quote(json.dumps(extract_rules))
+def process_json_stringify_param(param: dict, param_name: str) -> str:
+    if isinstance(param, dict):
+        return urllib.parse.quote(json.dumps(param))
     else:
-        raise ValueError("extract_rules must be a dict or a stringified JSON")
+        raise ValueError(f"{param_name} must be a dict or a stringified JSON")
 
 
 def process_params(params: dict) -> dict:
@@ -44,7 +44,9 @@ def process_params(params: dict) -> dict:
         elif k == 'cookies':
             new_params[k] = process_cookies(v)
         elif k == 'extract_rules':
-            new_params[k] = process_extract_rules(v)
+            new_params[k] = process_json_stringify_param(v, 'extract_rules')
+        elif k == 'js_scenario':
+            new_params[k] = process_json_stringify_param(v, 'js_scenario')
         else:
             new_params[k] = v
     return new_params
