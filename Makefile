@@ -8,7 +8,7 @@ lint:  ## Lint code
 	flake8 --config flake8 scrapingbee/ tests/ setup.py
 
 test:  ## Run tests
-	pytest tests/
+	python -m pytest tests/
 
 build:  ## Build a binary wheel and a source tarball
 	python setup.py sdist bdist_wheel

@@ -42,14 +42,17 @@ Signup to ScrapingBee to [get your API key](https://app.scrapingbee.com/account/
         'extract_rules': {'title': 'h1'},
         # Wrap response in JSON
         'json_response': False,
-        # JavaScript snippet to execute (clicking on a button, scrolling ...)
-        'js_snippet': '',
-        # Scrolling to the end of the page before returning your results
-        'js_scroll': False,
-        # The time to wait between each scroll	
-        'js_scroll_wait': 1000,
-        # The number of scrolls you want to make	
-        'js_scroll_count': 1,
+        # Interact with the webpage you want to scrape 
+        'json_scenario': {
+            "instructions": [
+                {"wait_for": "#slow_button"},
+                {"click": "#slow_button"},
+                {"scroll_x": 1000},
+                {"wait": 1000},
+                {"scroll_x": 1000},
+                {"wait": 1000},            
+            ]
+        },
         # Use premium proxies to bypass difficult to scrape websites (10-25 credits/request)
         'premium_proxy': False,
         # Execute JavaScript code with a Headless Browser (5 credits/request)

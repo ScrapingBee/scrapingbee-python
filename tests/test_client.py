@@ -93,6 +93,27 @@ def test_get_with_extract_rules(mock_request, client):
 
 
 @mock.patch('scrapingbee.client.request')
+def test_get_with_js_scenario(mock_request, client):
+    '''It should format the extract_rules and add them to the url'''
+    client.get('https://httpbin.org', params={
+        'js_scenario': {
+            'instructions': [
+                {"click": "#buttonId"}
+            ]
+        }
+    })
+
+    mock_request.assert_called_with(
+        'GET',
+        'https://app.scrapingbee.com/api/v1/'
+        '?api_key=API_KEY&url=https%3A//httpbin.org&'
+        'js_scenario=%7B%22instructions%22%3A%20%5B%7B%22click%22%3A%20%22%23buttonId%22%7D%5D%7D',
+        data=None,
+        headers=default_headers,
+    )
+
+
+@mock.patch('scrapingbee.client.request')
 def test_post(mock_request, client):
     '''It should make a POST request with some data'''
     client.post('https://httpbin.org', data={'KEY_1': 'VALUE_1'})
