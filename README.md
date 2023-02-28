@@ -33,7 +33,7 @@ Signup to ScrapingBee to [get your API key](https://app.scrapingbee.com/account/
         # Block ads on the page you want to scrape	
         'block_ads': False,
         # Block images and CSS on the page you want to scrape	
-        'block_resources': True,
+        'block_ressources': True,
         # Premium proxy geolocation
         'country_code': '',
         # Control the device the request will be sent from	
