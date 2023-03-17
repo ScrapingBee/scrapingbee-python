@@ -7,6 +7,7 @@ from .__version__ import __version__
 
 DEFAULT_HEADERS = {"User-Agent": f"ScrapingBee-Python/{__version__}"}
 
+
 def process_url(url: str) -> str:
     return urllib.parse.quote(url)
 
