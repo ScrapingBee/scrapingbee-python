@@ -1,6 +1,10 @@
-from requests import request, Response
+from typing import Optional
 
-from .default_headers import default_headers
+
+from requests import request, Response, Session
+from requests.adapters import HTTPAdapter
+from urllib3.util import Retry
+
 from .utils import get_scrapingbee_url, process_headers
 
 
@@ -14,11 +18,12 @@ class ScrapingBeeClient:
         self,
         method: str,
         url: str,
-        params: dict = None,
-        data: dict = None,
-        json: dict = None,
-        headers: dict = None,
-        cookies: dict = None,
+        params: Optional[dict] = None,
+        data: Optional[dict] = None,
+        json: Optional[dict] = None,
+        headers: Optional[dict] = None,
+        cookies: Optional[dict] = None,
+        retries: Optional[int] = None,
         **kwargs
     ) -> Response:
         if not params:
@@ -26,11 +31,8 @@ class ScrapingBeeClient:
 
         # Process headers and set forward_headers
         if headers:
-            headers = process_headers(headers)
             params["forward_headers"] = True
-        else:
-            headers = {}
-        headers.update(default_headers)
+        headers = process_headers(headers)
 
         # Add cookies to params
         if cookies:
@@ -40,12 +42,19 @@ class ScrapingBeeClient:
         # Get ScrapingBee API URL
         spb_url = get_scrapingbee_url(self.api_url, self.api_key, url, params)
 
-        if not data and json is not None:
-            return request(method, spb_url, json=json, headers=headers, **kwargs)
-        return request(method, spb_url, data=data, headers=headers, **kwargs)
+        session = Session()
+        if retries:
+            # Retries if it is a network error or a 5xx error on an idempotent request (GET)
+            retries = Retry(total=retries, raise_on_status=False, status_forcelist=frozenset(range(500, 600)))
+            session.mount('https://', HTTPAdapter(max_retries=retries))
+            session.mount('http://', HTTPAdapter(max_retries=retries))
 
-    def get(self, url: str, params: dict = None, headers: dict = None, cookies: dict = None, **kwargs) -> Response:
-        return self.request("GET", url, params=params, headers=headers, cookies=cookies, **kwargs)
+        if not data and json is not None:
+            return session.request(method, spb_url, json=json, headers=headers, **kwargs)
+        return session.request(method, spb_url, data=data, headers=headers, **kwargs)
+
+    def get(self, url: str, params: dict = None, headers: dict = None, cookies: dict = None, retries: Optional[int] = None, **kwargs) -> Response:
+        return self.request("GET", url, params=params, headers=headers, cookies=cookies, retries=retries, **kwargs)
 
     def post(
         self,
