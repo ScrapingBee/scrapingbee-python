@@ -53,7 +53,15 @@ class ScrapingBeeClient:
             return session.request(method, spb_url, json=json, headers=headers, **kwargs)
         return session.request(method, spb_url, data=data, headers=headers, **kwargs)
 
-    def get(self, url: str, params: dict = None, headers: dict = None, cookies: dict = None, retries: Optional[int] = None, **kwargs) -> Response:
+    def get(
+            self,
+            url: str,
+            params: dict = None,
+            headers: dict = None,
+            cookies: dict = None,
+            retries: Optional[int] = None,
+            **kwargs
+        ) -> Response:
         return self.request("GET", url, params=params, headers=headers, cookies=cookies, retries=retries, **kwargs)
 
     def post(
