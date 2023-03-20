@@ -26,14 +26,17 @@ def test_process_js_snippet():
 def test_process_headers():
     '''It should add a Spb- prefix to header names'''
     output = process_headers({'Accept-Language': 'En-US'})
-    assert output == {'Spb-Accept-Language': 'En-US'}
+    assert output == {
+        'User-Agent': 'ScrapingBee-Python/1.2.0',
+        'Spb-Accept-Language': 'En-US',
+    }
 
 
 def test_process_cookies():
     '''It should format cookies to a string'''
     output = process_cookies({
         'name_1': 'value_1',
-        'name_2': 'value_2'
+        'name_2': 'value_2',
     })
     assert output == 'name_1=value_1;name_2=value_2'
 

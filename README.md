@@ -122,3 +122,22 @@ Here a little exemple on how to retrieve and store a screenshot from the Scrapin
 ## Using ScrapingBee with Scrapy
 
 Scrapy is the most popular Python web scraping framework. You can easily [integrate ScrapingBee's API with the Scrapy middleware](https://github.com/ScrapingBee/scrapy-scrapingbee).
+
+
+## Retries
+
+The client includes a retry mechanism for 5XX responses.
+
+```python
+>>> from scrapingbee import ScrapingBeeClient
+
+>>> client = ScrapingBeeClient(api_key='REPLACE-WITH-YOUR-API-KEY')
+
+>>> response = client.get(
+    'https://www.scrapingbee.com/blog/', 
+    params={
+        'render_js': True,
+    },
+    retries=5
+)
+```

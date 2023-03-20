@@ -1,6 +1,11 @@
 import base64
 import json
 import urllib
+from typing import Optional
+
+from .__version__ import __version__
+
+DEFAULT_HEADERS = {"User-Agent": f"ScrapingBee-Python/{__version__}"}
 
 
 def process_url(url: str) -> str:
@@ -11,8 +16,10 @@ def process_js_snippet(js_snippet: str) -> str:
     return base64.b64encode(js_snippet.encode()).decode()
 
 
-def process_headers(headers: dict, prefix: str = 'Spb-') -> dict:
-    return {f'{prefix}{k}': v for k, v in headers.items()}
+def process_headers(headers: Optional[dict], prefix: str = 'Spb-') -> dict:
+    headers = headers or {}
+    headers = {f'{prefix}{k}': v for k, v in headers.items()}
+    return {**DEFAULT_HEADERS, **headers}
 
 
 def process_cookies(cookies: dict) -> str:
