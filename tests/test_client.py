@@ -19,7 +19,7 @@ def test_get(mock_session, client):
     mock_session.return_value.request.assert_called_with(
         'GET',
         'https://app.scrapingbee.com/api/v1/'
-        '?api_key=API_KEY&url=https%3A//httpbin.org',
+        '?api_key=API_KEY&url=https%3A%2F%2Fhttpbin.org',
         data=None,
         headers=DEFAULT_HEADERS
     )
@@ -33,7 +33,7 @@ def test_get_with_params(mock_session, client):
     mock_session.return_value.request.assert_called_with(
         'GET',
         'https://app.scrapingbee.com/api/v1/'
-        '?api_key=API_KEY&url=https%3A//httpbin.org&render_js=True',
+        '?api_key=API_KEY&url=https%3A%2F%2Fhttpbin.org&render_js=True',
         data=None,
         headers=DEFAULT_HEADERS,
     )
@@ -47,7 +47,7 @@ def test_get_with_headers(mock_session, client):
     mock_session.return_value.request.assert_called_with(
         'GET',
         'https://app.scrapingbee.com/api/v1/'
-        '?api_key=API_KEY&url=https%3A//httpbin.org&forward_headers=True',
+        '?api_key=API_KEY&url=https%3A%2F%2Fhttpbin.org&forward_headers=True',
         data=None,
         headers={'Spb-Content-Type': 'text/html; charset=utf-8',
                  **DEFAULT_HEADERS},
@@ -65,7 +65,7 @@ def test_get_with_cookies(mock_session, client):
     mock_session.return_value.request.assert_called_with(
         'GET',
         'https://app.scrapingbee.com/api/v1/'
-        '?api_key=API_KEY&url=https%3A//httpbin.org&cookies=name_1=value_1;name_2=value_2',
+        '?api_key=API_KEY&url=https%3A%2F%2Fhttpbin.org&cookies=name_1%3Dvalue_1%3Bname_2%3Dvalue_2',
         data=None,
         headers=DEFAULT_HEADERS,
     )
@@ -84,9 +84,9 @@ def test_get_with_extract_rules(mock_session, client):
     mock_session.return_value.request.assert_called_with(
         'GET',
         'https://app.scrapingbee.com/api/v1/'
-        '?api_key=API_KEY&url=https%3A//httpbin.org&'
-        'extract_rules=%7B%22title%22%3A%20%22h1%22%2C%20%22'
-        'subtitle%22%3A%20%22%23subtitle%22%7D',
+        '?api_key=API_KEY&url=https%3A%2F%2Fhttpbin.org&'
+        'extract_rules=%7B%22title%22%3A+%22h1%22%2C+%22'
+        'subtitle%22%3A+%22%23subtitle%22%7D',
         data=None,
         headers=DEFAULT_HEADERS,
     )
@@ -106,8 +106,8 @@ def test_get_with_js_scenario(mock_session, client):
     mock_session.return_value.request.assert_called_with(
         'GET',
         'https://app.scrapingbee.com/api/v1/'
-        '?api_key=API_KEY&url=https%3A//httpbin.org&'
-        'js_scenario=%7B%22instructions%22%3A%20%5B%7B%22click%22%3A%20%22%23buttonId%22%7D%5D%7D',
+        '?api_key=API_KEY&url=https%3A%2F%2Fhttpbin.org&'
+        'js_scenario=%7B%22instructions%22%3A+%5B%7B%22click%22%3A+%22%23buttonId%22%7D%5D%7D',
         data=None,
         headers=DEFAULT_HEADERS,
     )
@@ -120,7 +120,7 @@ def test_post(mock_session, client):
 
     mock_session.return_value.request.assert_called_with(
         'POST',
-        'https://app.scrapingbee.com/api/v1/?api_key=API_KEY&url=https%3A//httpbin.org',
+        'https://app.scrapingbee.com/api/v1/?api_key=API_KEY&url=https%3A%2F%2Fhttpbin.org',
         data={'KEY_1': 'VALUE_1'},
         headers=DEFAULT_HEADERS
     )
