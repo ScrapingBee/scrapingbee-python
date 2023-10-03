@@ -1,5 +1,4 @@
 from scrapingbee.utils import (
-    process_url,
     process_js_snippet,
     process_json_stringify_param,
     process_headers,
@@ -7,12 +6,6 @@ from scrapingbee.utils import (
     process_params,
     get_scrapingbee_url
 )
-
-
-def test_process_url():
-    '''It should encode the url'''
-    output = process_url('https://example.com?p=1')
-    assert output == 'https%3A//example.com%3Fp%3D1'
 
 
 def test_process_js_snippet():
@@ -46,7 +39,7 @@ def test_process_extract_rules():
     output = process_json_stringify_param({
         'title': '.title'
     }, 'extract_rules')
-    assert output == '%7B%22title%22%3A%20%22.title%22%7D'
+    assert output == '{"title": ".title"}'
 
 
 def test_process_js_scenario():
@@ -56,7 +49,7 @@ def test_process_js_scenario():
             {"click": "#buttonId"}
         ]
     }, 'js_scenario')
-    assert output == '%7B%22instructions%22%3A%20%5B%7B%22click%22%3A%20%22%23buttonId%22%7D%5D%7D'
+    assert output == '{"instructions": [{"click": "#buttonId"}]}'
 
 
 def test_process_params():
@@ -71,7 +64,7 @@ def test_get_scrapingbee_url():
         'https://app.scrapingbee.com/api/v1/',
         'API_KEY',
         'https://httpbin.org',
-        {'render_js': True}
+        {'render_js': True, 'wait_for': '#foo'}
     )
     assert output == 'https://app.scrapingbee.com/api/v1/' \
-        '?api_key=API_KEY&url=https%3A//httpbin.org&render_js=True'
+        '?api_key=API_KEY&url=https%3A%2F%2Fhttpbin.org&render_js=True&wait_for=%23foo'

@@ -8,10 +8,6 @@ from .__version__ import __version__
 DEFAULT_HEADERS = {"User-Agent": f"ScrapingBee-Python/{__version__}"}
 
 
-def process_url(url: str) -> str:
-    return urllib.parse.quote(url)
-
-
 def process_js_snippet(js_snippet: str) -> str:
     return base64.b64encode(js_snippet.encode()).decode()
 
@@ -34,7 +30,7 @@ def process_cookies(cookies: dict) -> str:
 
 def process_json_stringify_param(param: dict, param_name: str) -> str:
     if isinstance(param, dict):
-        return urllib.parse.quote(json.dumps(param))
+        return json.dumps(param)
     else:
         raise ValueError(f"{param_name} must be a dict or a stringified JSON")
 
@@ -44,8 +40,6 @@ def process_params(params: dict) -> dict:
     for k, v in params.items():
         if v in (None, '', [], {}):
             continue
-        elif k == 'url':
-            new_params[k] = process_url(v)
         elif k == 'js_snippet':
             new_params[k] = process_js_snippet(v)
         elif k == 'cookies':
@@ -71,6 +65,6 @@ def get_scrapingbee_url(api_url: str, api_key: str, url: str, params: dict) -> s
     spb_params = process_params(all_params)
 
     # Format url query string
-    qs = '&'.join(f'{k}={v}' for k, v in spb_params.items())
+    qs = urllib.parse.urlencode(spb_params)
 
     return f'{api_url}?{qs}'
