@@ -18,7 +18,7 @@ def test_process_headers():
     """It should add a Spb- prefix to header names"""
     output = process_headers({"Accept-Language": "En-US"})
     assert output == {
-        "User-Agent": "ScrapingBee-Python/2.0.0",
+        "User-Agent": "ScrapingBee-Python/2.0.1",
         "Spb-Accept-Language": "En-US",
     }
 
