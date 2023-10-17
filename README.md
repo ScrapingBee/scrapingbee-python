@@ -33,7 +33,7 @@ Signup to ScrapingBee to [get your API key](https://app.scrapingbee.com/account/
         # Block ads on the page you want to scrape	
         'block_ads': False,
         # Block images and CSS on the page you want to scrape	
-        'block_ressources': True,
+        'block_resources': True,
         # Premium proxy geolocation
         'country_code': '',
         # Control the device the request will be sent from	
@@ -43,7 +43,7 @@ Signup to ScrapingBee to [get your API key](https://app.scrapingbee.com/account/
         # Wrap response in JSON
         'json_response': False,
         # Interact with the webpage you want to scrape 
-        'json_scenario': {
+        'js_scenario': {
             "instructions": [
                 {"wait_for": "#slow_button"},
                 {"click": "#slow_button"},
