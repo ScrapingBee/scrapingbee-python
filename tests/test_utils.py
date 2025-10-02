@@ -48,7 +48,8 @@ def test_process_js_scenario():
 
 def test_process_ai_extract_rules():
     """It should format ai_extract_rules to a stringified JSON"""
-    output = process_json_stringify_param({"product_name": "The name of the product", "price": "The price in USD"}, "ai_extract_rules")
+    output = process_json_stringify_param(
+        {"product_name": "The name of the product", "price": "The price in USD"}, "ai_extract_rules")
     assert output == '{"product_name": "The name of the product", "price": "The price in USD"}'
 
 
