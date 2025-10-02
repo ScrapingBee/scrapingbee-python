@@ -40,6 +40,8 @@ Signup to ScrapingBee to [get your API key](https://app.scrapingbee.com/account/
         'device': 'desktop',
         # Use some data extraction rules
         'extract_rules': {'title': 'h1'},
+        # Use AI to extract data from the page
+        'ai_extract_rules': {'product_name': 'The name of the product', 'price': 'The price in USD'},
         # Wrap response in JSON
         'json_response': False,
         # Interact with the webpage you want to scrape 

@@ -114,6 +114,27 @@ def test_get_with_js_scenario(mock_session, client):
 
 
 @mock.patch('scrapingbee.client.Session')
+def test_get_with_ai_extract_rules(mock_session, client):
+    '''It should format the ai_extract_rules and add them to the url'''
+    client.get('https://httpbin.org', params={
+        'ai_extract_rules': {
+            "product_name": "The name of the product",
+            "price": "The price in USD"
+        }
+    })
+
+    mock_session.return_value.request.assert_called_with(
+        'GET',
+        'https://app.scrapingbee.com/api/v1/'
+        '?api_key=API_KEY&url=https%3A%2F%2Fhttpbin.org&'
+        'ai_extract_rules=%7B%22product_name%22%3A+%22The+name+of+the+product%22%2C+%22'
+        'price%22%3A+%22The+price+in+USD%22%7D',
+        data=None,
+        headers=DEFAULT_HEADERS,
+    )
+
+
+@mock.patch('scrapingbee.client.Session')
 def test_post(mock_session, client):
     '''It should make a POST request with some data'''
     client.post('https://httpbin.org', data={'KEY_1': 'VALUE_1'})

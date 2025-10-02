@@ -46,6 +46,8 @@ def process_params(params: dict) -> dict:
             new_params[k] = process_cookies(v)
         elif k == 'extract_rules':
             new_params[k] = process_json_stringify_param(v, 'extract_rules')
+        elif k == 'ai_extract_rules':
+            new_params[k] = process_json_stringify_param(v, 'ai_extract_rules')
         elif k == 'js_scenario':
             new_params[k] = process_json_stringify_param(v, 'js_scenario')
         else:
