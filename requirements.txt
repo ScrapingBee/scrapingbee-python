@@ -6,7 +6,7 @@ filelock==3.10.0
 flake8==6.0.0
 idna==3.4
 iniconfig==2.0.0
-mccabe==0.6.1
+mccabe==0.7.0
 more-itertools==9.1.0
 packaging==23.0
 platformdirs==3.1.1
