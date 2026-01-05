@@ -3,8 +3,7 @@ from scrapingbee.utils import (
     process_json_stringify_param,
     process_headers,
     process_cookies,
-    process_params,
-    get_scrapingbee_url,
+    process_params
 )
 
 
@@ -18,7 +17,7 @@ def test_process_headers():
     """It should add a Spb- prefix to header names"""
     output = process_headers({"Accept-Language": "En-US"})
     assert output == {
-        "User-Agent": "ScrapingBee-Python/2.0.2",
+        "User-Agent": "ScrapingBee-Python/2.1.0",
         "Spb-Accept-Language": "En-US",
     }
 
@@ -57,14 +56,3 @@ def test_process_params():
     """It should keep boolean parameters"""
     output = process_params({"render_js": True})
     assert output == {"render_js": True}
-
-
-def test_get_scrapingbee_url():
-    """It should generate a url"""
-    output = get_scrapingbee_url(
-        "https://app.scrapingbee.com/api/v1/", "API_KEY", "https://httpbin.org", {"render_js": True, "wait_for": "#foo"}
-    )
-    assert (
-        output == "https://app.scrapingbee.com/api/v1/"
-        "?api_key=API_KEY&url=https%3A%2F%2Fhttpbin.org&render_js=True&wait_for=%23foo"
-    )
