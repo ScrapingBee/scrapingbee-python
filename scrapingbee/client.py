@@ -1,11 +1,14 @@
 import warnings
 from functools import wraps
 
+
 from requests import Response, Session
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 
+
 from .utils import process_headers, process_params
+
 
 def deprecated(reason):
     """Decorator to mark functions as deprecated."""
