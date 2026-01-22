@@ -1,8 +1,25 @@
+import warnings
+from functools import wraps
+
 from requests import Response, Session
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 
 from .utils import process_headers, process_params
+
+def deprecated(reason):
+    """Decorator to mark functions as deprecated."""
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            warnings.warn(
+                f"{func.__name__}() is deprecated. {reason}",
+                category=DeprecationWarning,
+                stacklevel=2
+            )
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
 
 
 class ScrapingBeeClient:
@@ -59,6 +76,7 @@ class ScrapingBeeClient:
     # HTML API (Legacy - WILL BE REMOVED)
     # ============================================
 
+    @deprecated("Please use html_api() instead. This method will be removed in version 2.0.0.")
     def get(
         self,
         url: str,
@@ -89,6 +107,7 @@ class ScrapingBeeClient:
             **kwargs
         )
 
+    @deprecated("Please use html_api() instead. This method will be removed in version 2.0.0.")
     def post(
         self,
         url: str,
