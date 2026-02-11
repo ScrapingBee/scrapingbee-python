@@ -52,10 +52,10 @@ class ScrapingBeeClient:
         method: str,
         url: str,
         params: dict,
-        headers: dict = None,
-        data: dict = None,
-        json: dict = None,
-        retries: int = None,
+        headers: dict | None = None,
+        data: dict | None = None,
+        json: dict | None = None,
+        retries: int | None = None,
         **kwargs
     ) -> Response:
         """Core request method - adds api_key and makes the HTTP call."""
@@ -83,10 +83,10 @@ class ScrapingBeeClient:
     def get(
         self,
         url: str,
-        params: dict = None,
-        headers: dict = None,
-        cookies: dict = None,
-        retries: int = None,
+        params: dict | None = None,
+        headers: dict | None = None,
+        cookies: dict | None = None,
+        retries: int | None = None,
         **kwargs
     ) -> Response:
         """HTML API - GET request. DEPRECATED: Use html_api() instead."""
@@ -114,12 +114,12 @@ class ScrapingBeeClient:
     def post(
         self,
         url: str,
-        params: dict = None,
-        data: dict = None,
-        json: dict = None,
-        headers: dict = None,
-        cookies: dict = None,
-        retries: int = None,
+        params: dict | None = None,
+        data: dict | None = None,
+        json: dict | None = None,
+        headers: dict | None = None,
+        cookies: dict | None = None,
+        retries: int | None = None,
         **kwargs
     ) -> Response:
         """HTML API - POST request. DEPRECATED: Use html_api() instead."""
@@ -153,12 +153,12 @@ class ScrapingBeeClient:
         self,
         url: str,
         method: str = "GET",
-        params: dict = None,
-        data: dict = None,
-        json: dict = None,
-        headers: dict = None,
-        cookies: dict = None,
-        retries: int = None,
+        params: dict | None = None,
+        data: dict | None = None,
+        json: dict | None = None,
+        headers: dict | None = None,
+        cookies: dict | None = None,
+        retries: int | None = None,
         **kwargs
     ) -> Response:
         """HTML API - Scrape any webpage."""
@@ -191,8 +191,8 @@ class ScrapingBeeClient:
     def google_search(
         self,
         search: str,
-        params: dict = None,
-        retries: int = None,
+        params: dict | None = None,
+        retries: int | None = None,
         **kwargs
     ) -> Response:
         """Google Search API - Scrape Google search results."""
@@ -215,8 +215,8 @@ class ScrapingBeeClient:
     def amazon_search(
         self,
         query: str,
-        params: dict = None,
-        retries: int = None,
+        params: dict | None = None,
+        retries: int | None = None,
         **kwargs
     ) -> Response:
         """Amazon Search API - Scrape Amazon search results."""
@@ -235,8 +235,8 @@ class ScrapingBeeClient:
     def amazon_product(
         self,
         query: str,
-        params: dict = None,
-        retries: int = None,
+        params: dict | None = None,
+        retries: int | None = None,
         **kwargs
     ) -> Response:
         """Amazon Product API - Scrape Amazon product details."""
@@ -259,8 +259,8 @@ class ScrapingBeeClient:
     def walmart_search(
         self,
         query: str,
-        params: dict = None,
-        retries: int = None,
+        params: dict | None = None,
+        retries: int | None = None,
         **kwargs
     ) -> Response:
         """Walmart Search API - Scrape Walmart search results."""
@@ -279,8 +279,8 @@ class ScrapingBeeClient:
     def walmart_product(
         self,
         product_id: str,
-        params: dict = None,
-        retries: int = None,
+        params: dict | None = None,
+        retries: int | None = None,
         **kwargs
     ) -> Response:
         """Walmart Product API - Scrape Walmart product details."""
@@ -303,8 +303,8 @@ class ScrapingBeeClient:
     def youtube_search(
         self,
         search: str,
-        params: dict = None,
-        retries: int = None,
+        params: dict | None = None,
+        retries: int | None = None,
         **kwargs
     ) -> Response:
         """YouTube Search API - Scrape YouTube search results."""
@@ -323,8 +323,8 @@ class ScrapingBeeClient:
     def youtube_metadata(
         self,
         video_id: str,
-        params: dict = None,
-        retries: int = None,
+        params: dict | None = None,
+        retries: int | None = None,
         **kwargs
     ) -> Response:
         """YouTube Metadata API - Get YouTube video metadata."""
@@ -343,8 +343,8 @@ class ScrapingBeeClient:
     def youtube_transcript(
         self,
         video_id: str,
-        params: dict = None,
-        retries: int = None,
+        params: dict | None = None,
+        retries: int | None = None,
         **kwargs
     ) -> Response:
         """YouTube Transcript API - Get YouTube video transcript."""
@@ -363,8 +363,8 @@ class ScrapingBeeClient:
     def youtube_trainability(
         self,
         video_id: str,
-        params: dict = None,
-        retries: int = None,
+        params: dict | None = None,
+        retries: int | None = None,
         **kwargs
     ) -> Response:
         """YouTube Trainability API - Check video trainability."""
@@ -387,8 +387,8 @@ class ScrapingBeeClient:
     def chatgpt(
         self,
         prompt: str,
-        params: dict = None,
-        retries: int = None,
+        params: dict | None = None,
+        retries: int | None = None,
         **kwargs
     ) -> Response:
         """ChatGPT API - Use ChatGPT with optional web search."""
@@ -410,7 +410,7 @@ class ScrapingBeeClient:
 
     def usage(
         self,
-        retries: int = None,
+        retries: int | None = None,
         **kwargs
     ) -> Response:
         """Usage API - Check API credit usage and account limits."""
