@@ -95,6 +95,36 @@ You can find all the supported parameters on [ScrapingBee's documentation](https
 
 You can send custom cookies and headers like you would normally do with the requests library.
 
+## Auto-Mode
+
+With Auto-Mode, ScrapingBee picks the cheapest scraping configuration that successfully scrapes the page for you: it tries the cheaper options first and stops at the first one that works. You are charged only for the winning configuration (and 0 credits if every configuration fails).
+
+```python
+>>> from scrapingbee import ScrapingBeeClient
+
+>>> client = ScrapingBeeClient(api_key='REPLACE-WITH-YOUR-API-KEY')
+
+# Auto-Mode: ScrapingBee picks the cheapest config that works; you're charged only for the winning one.
+>>> response = client.get(
+    'https://example.com',
+    params={
+        'mode': 'auto',
+        # Optional: cap the credits a single request may cost (omit for uncapped).
+        'max_cost': 25
+    }
+)
+
+# Spb-auto-cost reports the credits actually charged (0 if every config failed).
+>>> response.headers['Spb-auto-cost']
+'1'
+```
+
+Notes:
+
+- Auto-Mode is only available on `GET` requests.
+- `max_cost` is optional and must be `>= 1`; omit it to leave the cost uncapped.
+- `mode=auto` cannot be combined with `render_js`, `premium_proxy`, or `stealth_proxy` (ScrapingBee chooses these for you). Sending them together returns a `400`.
+
 ## Screenshot
 
 Here a little exemple on how to retrieve and store a screenshot from the ScrapingBee blog in its mobile resolution.
