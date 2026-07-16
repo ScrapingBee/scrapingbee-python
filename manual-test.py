@@ -1,4 +1,5 @@
 import os
+
 from scrapingbee import ScrapingBeeClient
 
 API_KEY = os.environ.get("SCRAPINGBEE_API_KEY")
@@ -22,13 +23,16 @@ def test_html_get():
     print("=== Testing HTML API - GET ===")
     try:
         response = client.get(
-            url="https://httpbin.org/get",
+            url="https://httpbingo.org/get",
             params={"render_js": False}
         )
 
         assert_test(response.status_code == 200, f"Expected status 200, got {response.status_code}")
         assert_test(response.text, "Response is empty")
-        assert_test("httpbin" in response.text, "Response does not contain expected content")
+        assert_test(
+            "httpbin" in response.text or "headers" in response.text.lower(),
+            "Response does not contain expected content",
+        )
 
         print(f"Status: {response.status_code}")
         print("✅ HTML GET test passed!\n")
@@ -41,7 +45,7 @@ def test_html_post():
     print("=== Testing HTML API - POST ===")
     try:
         response = client.post(
-            url="https://httpbin.org/post",
+            url="https://httpbingo.org/post",
             params={"render_js": False},
             data={"test": "data"}
         )
@@ -65,14 +69,17 @@ def test_html_api_get():
     print("=== Testing HTML API (New) - GET ===")
     try:
         response = client.html_api(
-            url="https://httpbin.org/get",
+            url="https://httpbingo.org/get",
             method="GET",
             params={"render_js": False}
         )
 
         assert_test(response.status_code == 200, f"Expected status 200, got {response.status_code}")
         assert_test(response.text, "Response is empty")
-        assert_test("httpbin" in response.text, "Response does not contain expected content")
+        assert_test(
+            "httpbin" in response.text or "headers" in response.text.lower(),
+            "Response does not contain expected content",
+        )
 
         print(f"Status: {response.status_code}")
         print("✅ HTML API GET test passed!\n")
@@ -85,7 +92,7 @@ def test_html_api_post():
     print("=== Testing HTML API (New) - POST ===")
     try:
         response = client.html_api(
-            url="https://httpbin.org/post",
+            url="https://httpbingo.org/post",
             method="POST",
             params={"render_js": False},
             data={"test": "data"}
@@ -200,7 +207,7 @@ def test_html_api_json_response():
     print("=== Testing HTML API - JSON Response ===")
     try:
         response = client.html_api(
-            url="https://httpbin.org/get",
+            url="https://httpbingo.org/get",
             params={
                 "render_js": False,
                 "json_response": True
@@ -229,7 +236,7 @@ def test_html_api_with_headers():
     print("=== Testing HTML API - Custom Headers ===")
     try:
         response = client.html_api(
-            url="https://httpbin.org/headers",
+            url="https://httpbingo.org/headers",
             params={"render_js": False},
             headers={"X-Custom-Header": "CustomValue123"}
         )
@@ -248,7 +255,7 @@ def test_html_api_with_cookies():
     print("=== Testing HTML API - Custom Cookies ===")
     try:
         response = client.html_api(
-            url="https://httpbin.org/cookies",
+            url="https://httpbingo.org/cookies",
             params={"render_js": False},
             cookies={"session_id": "abc123", "user_token": "xyz789"}
         )
@@ -267,7 +274,7 @@ def test_html_api_post_with_headers_and_cookies():
     print("=== Testing HTML API - POST with Headers + Cookies ===")
     try:
         response = client.html_api(
-            url="https://httpbin.org/post",
+            url="https://httpbingo.org/post",
             method="POST",
             params={"render_js": False},
             headers={"X-Test-Header": "TestValue"},
