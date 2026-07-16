@@ -5,6 +5,11 @@ import pytest
 from scrapingbee import ScrapingBeeClient
 from scrapingbee.utils import DEFAULT_HEADERS
 
+DEPRECATION_MESSAGE = (
+    r"Please use html_api\(\) instead\. "
+    r"This method will be removed in version 3\.0\.0\."
+)
+
 
 @pytest.fixture(scope='module')
 def client():
@@ -18,7 +23,8 @@ def client():
 @mock.patch('scrapingbee.client.Session')
 def test_get(mock_session, client):
     '''It should make a GET request with the url and API key'''
-    client.get('https://httpbin.org')
+    with pytest.warns(DeprecationWarning, match=DEPRECATION_MESSAGE):
+        client.get('https://httpbin.org')
 
     mock_session.return_value.request.assert_called_with(
         'GET',
@@ -32,7 +38,8 @@ def test_get(mock_session, client):
 @mock.patch('scrapingbee.client.Session')
 def test_get_with_params(mock_session, client):
     '''It should add parameters to the request'''
-    client.get('https://httpbin.org', params={'render_js': True})
+    with pytest.warns(DeprecationWarning, match=DEPRECATION_MESSAGE):
+        client.get('https://httpbin.org', params={'render_js': True})
 
     mock_session.return_value.request.assert_called_with(
         'GET',
@@ -46,7 +53,8 @@ def test_get_with_params(mock_session, client):
 @mock.patch('scrapingbee.client.Session')
 def test_get_with_headers(mock_session, client):
     '''It should prefix header names with Spb- and set forward_headers'''
-    client.get('https://httpbin.org', headers={'Content-Type': 'text/html; charset=utf-8'})
+    with pytest.warns(DeprecationWarning, match=DEPRECATION_MESSAGE):
+        client.get('https://httpbin.org', headers={'Content-Type': 'text/html; charset=utf-8'})
 
     mock_session.return_value.request.assert_called_with(
         'GET',
@@ -60,10 +68,11 @@ def test_get_with_headers(mock_session, client):
 @mock.patch('scrapingbee.client.Session')
 def test_get_with_cookies(mock_session, client):
     '''It should format the cookies and add them to the params'''
-    client.get('https://httpbin.org', cookies={
-        'name_1': 'value_1',
-        'name_2': 'value_2',
-    })
+    with pytest.warns(DeprecationWarning, match=DEPRECATION_MESSAGE):
+        client.get('https://httpbin.org', cookies={
+            'name_1': 'value_1',
+            'name_2': 'value_2',
+        })
 
     mock_session.return_value.request.assert_called_with(
         'GET',
@@ -77,12 +86,13 @@ def test_get_with_cookies(mock_session, client):
 @mock.patch('scrapingbee.client.Session')
 def test_get_with_extract_rules(mock_session, client):
     '''It should format the extract_rules and add them to the params'''
-    client.get('https://httpbin.org', params={
-        'extract_rules': {
-            "title": "h1",
-            "subtitle": "#subtitle"
-        }
-    })
+    with pytest.warns(DeprecationWarning, match=DEPRECATION_MESSAGE):
+        client.get('https://httpbin.org', params={
+            'extract_rules': {
+                "title": "h1",
+                "subtitle": "#subtitle"
+            }
+        })
 
     mock_session.return_value.request.assert_called_with(
         'GET',
@@ -100,13 +110,14 @@ def test_get_with_extract_rules(mock_session, client):
 @mock.patch('scrapingbee.client.Session')
 def test_get_with_js_scenario(mock_session, client):
     '''It should format the js_scenario and add them to the params'''
-    client.get('https://httpbin.org', params={
-        'js_scenario': {
-            'instructions': [
-                {"click": "#buttonId"}
-            ]
-        }
-    })
+    with pytest.warns(DeprecationWarning, match=DEPRECATION_MESSAGE):
+        client.get('https://httpbin.org', params={
+            'js_scenario': {
+                'instructions': [
+                    {"click": "#buttonId"}
+                ]
+            }
+        })
 
     mock_session.return_value.request.assert_called_with(
         'GET',
@@ -124,12 +135,13 @@ def test_get_with_js_scenario(mock_session, client):
 @mock.patch('scrapingbee.client.Session')
 def test_get_with_ai_extract_rules(mock_session, client):
     '''It should format the ai_extract_rules and add them to the params'''
-    client.get('https://httpbin.org', params={
-        'ai_extract_rules': {
-            "product_name": "The name of the product",
-            "price": "The price in USD"
-        }
-    })
+    with pytest.warns(DeprecationWarning, match=DEPRECATION_MESSAGE):
+        client.get('https://httpbin.org', params={
+            'ai_extract_rules': {
+                "product_name": "The name of the product",
+                "price": "The price in USD"
+            }
+        })
 
     mock_session.return_value.request.assert_called_with(
         'GET',
@@ -151,7 +163,8 @@ def test_get_with_ai_extract_rules(mock_session, client):
 @mock.patch('scrapingbee.client.Session')
 def test_post(mock_session, client):
     '''It should make a POST request with some data'''
-    client.post('https://httpbin.org', data={'KEY_1': 'VALUE_1'})
+    with pytest.warns(DeprecationWarning, match=DEPRECATION_MESSAGE):
+        client.post('https://httpbin.org', data={'KEY_1': 'VALUE_1'})
 
     mock_session.return_value.request.assert_called_with(
         'POST',
@@ -380,6 +393,44 @@ def test_google_search_with_params(mock_session, client):
 
 
 # ============================================
+# Fast Search API Tests
+# ============================================
+
+@mock.patch('scrapingbee.client.Session')
+def test_fast_search(mock_session, client):
+    '''It should make a Fast Search request'''
+    client.fast_search('test query')
+
+    mock_session.return_value.request.assert_called_with(
+        'GET',
+        'https://app.scrapingbee.com/api/v1/fast_search',
+        params={'api_key': 'API_KEY', 'search': 'test query'},
+        data=None,
+        headers=None
+    )
+
+
+@mock.patch('scrapingbee.client.Session')
+def test_fast_search_with_params(mock_session, client):
+    '''It should add parameters to Fast Search request'''
+    client.fast_search('test query', params={'page': 2, 'country_code': 'us', 'language': 'en'})
+
+    mock_session.return_value.request.assert_called_with(
+        'GET',
+        'https://app.scrapingbee.com/api/v1/fast_search',
+        params={
+            'api_key': 'API_KEY',
+            'search': 'test query',
+            'page': 2,
+            'country_code': 'us',
+            'language': 'en',
+        },
+        data=None,
+        headers=None
+    )
+
+
+# ============================================
 # Amazon API Tests
 # ============================================
 
@@ -434,6 +485,39 @@ def test_amazon_product_with_params(mock_session, client):
         'GET',
         'https://app.scrapingbee.com/api/v1/amazon/product',
         params={'api_key': 'API_KEY', 'query': 'B0D2Q9397Y', 'domain': 'com'},
+        data=None,
+        headers=None
+    )
+
+
+@mock.patch('scrapingbee.client.Session')
+def test_amazon_pricing(mock_session, client):
+    '''It should make an Amazon Pricing request'''
+    client.amazon_pricing('B0DPDRNSXV')
+
+    mock_session.return_value.request.assert_called_with(
+        'GET',
+        'https://app.scrapingbee.com/api/v1/amazon/pricing',
+        params={'api_key': 'API_KEY', 'asin': 'B0DPDRNSXV'},
+        data=None,
+        headers=None
+    )
+
+
+@mock.patch('scrapingbee.client.Session')
+def test_amazon_pricing_with_params(mock_session, client):
+    '''It should add parameters to Amazon Pricing request'''
+    client.amazon_pricing('B0DPDRNSXV', params={'domain': 'com', 'light_request': True})
+
+    mock_session.return_value.request.assert_called_with(
+        'GET',
+        'https://app.scrapingbee.com/api/v1/amazon/pricing',
+        params={
+            'api_key': 'API_KEY',
+            'asin': 'B0DPDRNSXV',
+            'domain': 'com',
+            'light_request': True,
+        },
         data=None,
         headers=None
     )
@@ -546,13 +630,13 @@ def test_youtube_metadata(mock_session, client):
 
 
 @mock.patch('scrapingbee.client.Session')
-def test_youtube_transcript(mock_session, client):
-    '''It should make a YouTube Transcript request'''
-    client.youtube_transcript('dQw4w9WgXcQ')
+def test_youtube_subtitles(mock_session, client):
+    '''It should make a YouTube Subtitles request'''
+    client.youtube_subtitles('dQw4w9WgXcQ')
 
     mock_session.return_value.request.assert_called_with(
         'GET',
-        'https://app.scrapingbee.com/api/v1/youtube/transcript',
+        'https://app.scrapingbee.com/api/v1/youtube/subtitles',
         params={'api_key': 'API_KEY', 'video_id': 'dQw4w9WgXcQ'},
         data=None,
         headers=None
@@ -560,28 +644,22 @@ def test_youtube_transcript(mock_session, client):
 
 
 @mock.patch('scrapingbee.client.Session')
-def test_youtube_transcript_with_params(mock_session, client):
-    '''It should add parameters to YouTube Transcript request'''
-    client.youtube_transcript('dQw4w9WgXcQ', params={'language': 'en'})
-
-    mock_session.return_value.request.assert_called_with(
-        'GET',
-        'https://app.scrapingbee.com/api/v1/youtube/transcript',
-        params={'api_key': 'API_KEY', 'video_id': 'dQw4w9WgXcQ', 'language': 'en'},
-        data=None,
-        headers=None
+def test_youtube_subtitles_with_params(mock_session, client):
+    '''It should add parameters to YouTube Subtitles request'''
+    client.youtube_subtitles(
+        'dQw4w9WgXcQ',
+        params={'language': 'en', 'subtitle_origin': 'uploader_provided'}
     )
 
-
-@mock.patch('scrapingbee.client.Session')
-def test_youtube_trainability(mock_session, client):
-    '''It should make a YouTube Trainability request'''
-    client.youtube_trainability('dQw4w9WgXcQ')
-
     mock_session.return_value.request.assert_called_with(
         'GET',
-        'https://app.scrapingbee.com/api/v1/youtube/trainability',
-        params={'api_key': 'API_KEY', 'video_id': 'dQw4w9WgXcQ'},
+        'https://app.scrapingbee.com/api/v1/youtube/subtitles',
+        params={
+            'api_key': 'API_KEY',
+            'video_id': 'dQw4w9WgXcQ',
+            'language': 'en',
+            'subtitle_origin': 'uploader_provided',
+        },
         data=None,
         headers=None
     )
@@ -614,6 +692,43 @@ def test_chatgpt_with_params(mock_session, client):
         'GET',
         'https://app.scrapingbee.com/api/v1/chatgpt',
         params={'api_key': 'API_KEY', 'prompt': 'What is web scraping?', 'search': True},
+        data=None,
+        headers=None
+    )
+
+
+# ============================================
+# Gemini API Tests
+# ============================================
+
+@mock.patch('scrapingbee.client.Session')
+def test_gemini(mock_session, client):
+    '''It should make a Gemini request'''
+    client.gemini('What is web scraping?')
+
+    mock_session.return_value.request.assert_called_with(
+        'GET',
+        'https://app.scrapingbee.com/api/v1/gemini',
+        params={'api_key': 'API_KEY', 'prompt': 'What is web scraping?'},
+        data=None,
+        headers=None
+    )
+
+
+@mock.patch('scrapingbee.client.Session')
+def test_gemini_with_params(mock_session, client):
+    '''It should add parameters to Gemini request'''
+    client.gemini('What is web scraping?', params={'country_code': 'us', 'add_html': True})
+
+    mock_session.return_value.request.assert_called_with(
+        'GET',
+        'https://app.scrapingbee.com/api/v1/gemini',
+        params={
+            'api_key': 'API_KEY',
+            'prompt': 'What is web scraping?',
+            'country_code': 'us',
+            'add_html': True,
+        },
         data=None,
         headers=None
     )

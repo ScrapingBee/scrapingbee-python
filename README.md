@@ -24,10 +24,12 @@ Signup to ScrapingBee to [get your API key](https://app.scrapingbee.com/account/
 
 - [HTML API](#html-api)
 - [Google Search API](#google-search-api)
+- [Fast Search API](#fast-search-api)
 - [Amazon API](#amazon-api)
 - [Walmart API](#walmart-api)
 - [YouTube API](#youtube-api)
 - [ChatGPT API](#chatgpt-api)
+- [Gemini API](#gemini-api)
 - [Usage API](#usage-api)
 
 ---
@@ -86,9 +88,28 @@ print(response.json())
 
 ---
 
+## Fast Search API
+
+Lightweight Google search results in under a second.
+
+```python
+response = client.fast_search(
+    search='pizza in new york',
+    params={
+        'country_code': 'us',
+        'language': 'en',
+        'page': 1
+    }
+)
+
+print(response.json())
+```
+
+---
+
 ## Amazon API
 
-Scrape Amazon search results and product details.
+Scrape Amazon search results, product details, and pricing.
 
 ### Amazon Search
 
@@ -112,6 +133,20 @@ response = client.amazon_product(
     query='B0D2Q9397Y',  # ASIN
     params={
         'domain': 'com'
+    }
+)
+
+print(response.json())
+```
+
+### Amazon Pricing
+
+```python
+response = client.amazon_pricing(
+    asin='B0DPDRNSXV',
+    params={
+        'domain': 'com',
+        'light_request': True
     }
 )
 
@@ -155,7 +190,7 @@ print(response.json())
 
 ## YouTube API
 
-Scrape YouTube search results, video metadata, and transcripts.
+Scrape YouTube search results, video metadata, and subtitles.
 
 ### YouTube Search
 
@@ -178,20 +213,16 @@ response = client.youtube_metadata(video_id='dQw4w9WgXcQ')
 print(response.json())
 ```
 
-### YouTube Transcript
+### YouTube Subtitles
 
 ```python
-response = client.youtube_transcript(
+response = client.youtube_subtitles(
     video_id='dQw4w9WgXcQ',
-    params={'language': 'en'}
+    params={
+        'language': 'en',
+        'subtitle_origin': 'uploader_provided'
+    }
 )
-print(response.json())
-```
-
-### YouTube Trainability
-
-```python
-response = client.youtube_trainability(video_id='dQw4w9WgXcQ')
 print(response.json())
 ```
 
@@ -207,6 +238,24 @@ response = client.chatgpt(
     params={
         'search': True,
         'country_code': 'us'
+    }
+)
+
+print(response.json())
+```
+
+---
+
+## Gemini API
+
+Send prompts to Gemini and receive AI-generated responses.
+
+```python
+response = client.gemini(
+    prompt='Best programming languages for data science',
+    params={
+        'country_code': 'us',
+        'add_html': False
     }
 )
 

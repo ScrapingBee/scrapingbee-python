@@ -313,6 +313,33 @@ def test_google_search():
 
 
 # ============================================
+# Fast Search API
+# ============================================
+
+def test_fast_search():
+    print("=== Testing Fast Search API ===")
+    try:
+        response = client.fast_search(
+            search="scrapingbee",
+            params={"country_code": "us", "language": "en"}
+        )
+
+        assert_test(response.status_code == 200, f"Expected status 200, got {response.status_code}")
+
+        data = response.json()
+        assert_test(data.get("organic"), "Missing organic in response")
+        assert_test(isinstance(data.get("organic"), list), "organic is not a list")
+        assert_test(len(data.get("organic", [])) > 0, "No organic results found")
+
+        print(f"Status: {response.status_code}")
+        print(f"Results found: {len(data.get('organic', []))}")
+        print("✅ Fast Search test passed!\n")
+    except Exception as e:
+        print(f"❌ Fast Search test failed: {e}\n")
+        raise
+
+
+# ============================================
 # Amazon API
 # ============================================
 
@@ -357,6 +384,28 @@ def test_amazon_product():
         print("✅ Amazon Product test passed!\n")
     except Exception as e:
         print(f"❌ Amazon Product test failed: {e}\n")
+        raise
+
+
+def test_amazon_pricing():
+    print("=== Testing Amazon Pricing API ===")
+    try:
+        response = client.amazon_pricing(
+            asin="B0DPDRNSXV",
+            params={"domain": "com"}
+        )
+
+        assert_test(response.status_code == 200, f"Expected status 200, got {response.status_code}")
+
+        data = response.json()
+        assert_test(data.get("pricing") is not None or data.get("asin"), "Missing pricing data in response")
+
+        print(f"Status: {response.status_code}")
+        print(f"ASIN: {data.get('asin')}")
+        print(f"Offers: {len(data.get('pricing', []))}")
+        print("✅ Amazon Pricing test passed!\n")
+    except Exception as e:
+        print(f"❌ Amazon Pricing test failed: {e}\n")
         raise
 
 
@@ -453,43 +502,24 @@ def test_youtube_metadata():
         raise
 
 
-def test_youtube_transcript():
-    print("=== Testing YouTube Transcript API ===")
+def test_youtube_subtitles():
+    print("=== Testing YouTube Subtitles API ===")
     try:
-        response = client.youtube_transcript(
-            video_id="sfyL4BswUeE",
+        response = client.youtube_subtitles(
+            video_id="dQw4w9WgXcQ",
             params={"language": "en"}
         )
 
         assert_test(response.status_code == 200, f"Expected status 200, got {response.status_code}")
 
         data = response.json()
-        assert_test(data.get("text") or data.get("transcript"), "Missing transcript in response")
-
-        transcript_preview = (data.get("text") or str(data.get("transcript", "")))[:100]
-        print(f"Status: {response.status_code}")
-        print(f"Transcript preview: {transcript_preview}")
-        print("✅ YouTube Transcript test passed!\n")
-    except Exception as e:
-        print(f"❌ YouTube Transcript test failed: {e}\n")
-        raise
-
-
-def test_youtube_trainability():
-    print("=== Testing YouTube Trainability API ===")
-    try:
-        response = client.youtube_trainability(video_id="dQw4w9WgXcQ")
-
-        assert_test(response.status_code == 200, f"Expected status 200, got {response.status_code}")
-
-        data = response.json()
-        assert_test(data.get("permitted") is not None, "Missing permitted field in response")
+        assert_test(data.get("subtitles"), "Missing subtitles in response")
 
         print(f"Status: {response.status_code}")
-        print(f"Permitted: {data.get('permitted')}")
-        print("✅ YouTube Trainability test passed!\n")
+        print(f"Subtitle origins: {list(data.get('subtitles', {}).keys())}")
+        print("✅ YouTube Subtitles test passed!\n")
     except Exception as e:
-        print(f"❌ YouTube Trainability test failed: {e}\n")
+        print(f"❌ YouTube Subtitles test failed: {e}\n")
         raise
 
 
@@ -516,6 +546,32 @@ def test_chatgpt():
         print("✅ ChatGPT test passed!\n")
     except Exception as e:
         print(f"❌ ChatGPT test failed: {e}\n")
+        raise
+
+
+# ============================================
+# Gemini API
+# ============================================
+
+def test_gemini():
+    print("=== Testing Gemini API ===")
+    try:
+        response = client.gemini(
+            prompt="What is web scraping? Answer in one sentence.",
+            params={"country_code": "us"}
+        )
+
+        assert_test(response.status_code == 200, f"Expected status 200, got {response.status_code}")
+
+        data = response.json()
+        assert_test(data.get("results_text") or data.get("results_markdown"), "Missing response text")
+
+        response_text = (data.get("results_text") or data.get("results_markdown", ""))[:100]
+        print(f"Status: {response.status_code}")
+        print(f"Response: {response_text}")
+        print("✅ Gemini test passed!\n")
+    except Exception as e:
+        print(f"❌ Gemini test failed: {e}\n")
         raise
 
 
@@ -570,15 +626,17 @@ def run_tests():
 
         # Other APIs
         test_google_search,
+        test_fast_search,
         test_amazon_search,
         test_amazon_product,
+        test_amazon_pricing,
         test_walmart_search,
         test_walmart_product,
         test_youtube_search,
         test_youtube_metadata,
-        test_youtube_transcript,
-        test_youtube_trainability,
+        test_youtube_subtitles,
         test_chatgpt,
+        test_gemini,
         test_usage,
     ]
 

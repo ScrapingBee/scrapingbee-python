@@ -1,43 +1,26 @@
-import warnings
-from functools import wraps
-
-
 from requests import Response, Session
 from requests.adapters import HTTPAdapter
+from typing_extensions import deprecated
 from urllib3.util import Retry
 
-
 from .utils import process_headers, process_params
-
-
-def deprecated(reason):
-    """Decorator to mark functions as deprecated."""
-    def decorator(func):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            warnings.warn(
-                f"{func.__name__}() is deprecated. {reason}",
-                category=DeprecationWarning,
-                stacklevel=2
-            )
-            return func(*args, **kwargs)
-        return wrapper
-    return decorator
 
 
 class ScrapingBeeClient:
     # API Endpoints
     HTML_API_URL = "https://app.scrapingbee.com/api/v1/"
     GOOGLE_API_URL = "https://app.scrapingbee.com/api/v1/store/google"
+    FAST_SEARCH_API_URL = "https://app.scrapingbee.com/api/v1/fast_search"
     AMAZON_SEARCH_API_URL = "https://app.scrapingbee.com/api/v1/amazon/search"
     AMAZON_PRODUCT_API_URL = "https://app.scrapingbee.com/api/v1/amazon/product"
+    AMAZON_PRICING_API_URL = "https://app.scrapingbee.com/api/v1/amazon/pricing"
     WALMART_SEARCH_API_URL = "https://app.scrapingbee.com/api/v1/walmart/search"
     WALMART_PRODUCT_API_URL = "https://app.scrapingbee.com/api/v1/walmart/product"
     YOUTUBE_SEARCH_API_URL = "https://app.scrapingbee.com/api/v1/youtube/search"
     YOUTUBE_METADATA_API_URL = "https://app.scrapingbee.com/api/v1/youtube/metadata"
-    YOUTUBE_TRANSCRIPT_API_URL = "https://app.scrapingbee.com/api/v1/youtube/transcript"
-    YOUTUBE_TRAINABILITY_API_URL = "https://app.scrapingbee.com/api/v1/youtube/trainability"
+    YOUTUBE_SUBTITLES_API_URL = "https://app.scrapingbee.com/api/v1/youtube/subtitles"
     CHATGPT_API_URL = "https://app.scrapingbee.com/api/v1/chatgpt"
+    GEMINI_API_URL = "https://app.scrapingbee.com/api/v1/gemini"
     USAGE_API_URL = "https://app.scrapingbee.com/api/v1/usage"
 
     def __init__(self, api_key: str):
@@ -79,7 +62,7 @@ class ScrapingBeeClient:
     # HTML API (Legacy - WILL BE REMOVED)
     # ============================================
 
-    @deprecated("Please use html_api() instead. This method will be removed in version 2.0.0.")
+    @deprecated("Please use html_api() instead. This method will be removed in version 3.0.0.")
     def get(
         self,
         url: str,
@@ -110,7 +93,7 @@ class ScrapingBeeClient:
             **kwargs
         )
 
-    @deprecated("Please use html_api() instead. This method will be removed in version 2.0.0.")
+    @deprecated("Please use html_api() instead. This method will be removed in version 3.0.0.")
     def post(
         self,
         url: str,
@@ -209,6 +192,30 @@ class ScrapingBeeClient:
         )
 
     # ============================================
+    # Fast Search API
+    # ============================================
+
+    def fast_search(
+        self,
+        search: str,
+        params: dict | None = None,
+        retries: int | None = None,
+        **kwargs
+    ) -> Response:
+        """Fast Search API - Lightweight Google search results."""
+        if params is None:
+            params = {}
+        params["search"] = search
+
+        return self.request(
+            method="GET",
+            url=self.FAST_SEARCH_API_URL,
+            params=params,
+            retries=retries,
+            **kwargs
+        )
+
+    # ============================================
     # Amazon API
     # ============================================
 
@@ -247,6 +254,26 @@ class ScrapingBeeClient:
         return self.request(
             method="GET",
             url=self.AMAZON_PRODUCT_API_URL,
+            params=params,
+            retries=retries,
+            **kwargs
+        )
+
+    def amazon_pricing(
+        self,
+        asin: str,
+        params: dict | None = None,
+        retries: int | None = None,
+        **kwargs
+    ) -> Response:
+        """Amazon Pricing API - Scrape Amazon product pricing details."""
+        if params is None:
+            params = {}
+        params["asin"] = asin
+
+        return self.request(
+            method="GET",
+            url=self.AMAZON_PRICING_API_URL,
             params=params,
             retries=retries,
             **kwargs
@@ -340,41 +367,21 @@ class ScrapingBeeClient:
             **kwargs
         )
 
-    def youtube_transcript(
+    def youtube_subtitles(
         self,
         video_id: str,
         params: dict | None = None,
         retries: int | None = None,
         **kwargs
     ) -> Response:
-        """YouTube Transcript API - Get YouTube video transcript."""
+        """YouTube Subtitles API - Get YouTube video subtitles."""
         if params is None:
             params = {}
         params["video_id"] = video_id
 
         return self.request(
             method="GET",
-            url=self.YOUTUBE_TRANSCRIPT_API_URL,
-            params=params,
-            retries=retries,
-            **kwargs
-        )
-
-    def youtube_trainability(
-        self,
-        video_id: str,
-        params: dict | None = None,
-        retries: int | None = None,
-        **kwargs
-    ) -> Response:
-        """YouTube Trainability API - Check video trainability."""
-        if params is None:
-            params = {}
-        params["video_id"] = video_id
-
-        return self.request(
-            method="GET",
-            url=self.YOUTUBE_TRAINABILITY_API_URL,
+            url=self.YOUTUBE_SUBTITLES_API_URL,
             params=params,
             retries=retries,
             **kwargs
@@ -399,6 +406,30 @@ class ScrapingBeeClient:
         return self.request(
             method="GET",
             url=self.CHATGPT_API_URL,
+            params=params,
+            retries=retries,
+            **kwargs
+        )
+
+    # ============================================
+    # Gemini API
+    # ============================================
+
+    def gemini(
+        self,
+        prompt: str,
+        params: dict | None = None,
+        retries: int | None = None,
+        **kwargs
+    ) -> Response:
+        """Gemini API - Send prompts to Gemini and receive AI-generated responses."""
+        if params is None:
+            params = {}
+        params["prompt"] = prompt
+
+        return self.request(
+            method="GET",
+            url=self.GEMINI_API_URL,
             params=params,
             retries=retries,
             **kwargs
