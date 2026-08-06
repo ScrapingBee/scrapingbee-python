@@ -1,6 +1,5 @@
 import base64
 import json
-import urllib
 from typing import Optional
 
 from .__version__ import __version__
@@ -53,20 +52,3 @@ def process_params(params: dict) -> dict:
         else:
             new_params[k] = v
     return new_params
-
-
-def get_scrapingbee_url(api_url: str, api_key: str, url: str, params: dict) -> str:
-    all_params = {
-        'api_key': api_key,
-        'url': url
-    }
-    if params:
-        all_params.update(params)
-
-    # Process params
-    spb_params = process_params(all_params)
-
-    # Format url query string
-    qs = urllib.parse.urlencode(spb_params)
-
-    return f'{api_url}?{qs}'

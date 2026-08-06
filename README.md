@@ -16,86 +16,59 @@ pip install scrapingbee
 
 ## Usage
 
-The ScrapingBee Python SDK is a wrapper around the [requests](https://docs.python-requests.org/en/master/) library. ScrapingBee supports GET and POST requests.
+The ScrapingBee Python SDK is a wrapper around the [requests](https://docs.python-requests.org/en/master/) library.
 
 Signup to ScrapingBee to [get your API key](https://app.scrapingbee.com/account/register) and some free credits to get started.
 
-### Making a GET request
+## Table of Contents
+
+- [HTML API](#html-api)
+  - [Auto-Mode](#auto-mode)
+- [Google Search API](#google-search-api)
+- [Fast Search API](#fast-search-api)
+- [Amazon API](#amazon-api)
+- [Walmart API](#walmart-api)
+- [YouTube API](#youtube-api)
+- [ChatGPT API](#chatgpt-api)
+- [Gemini API](#gemini-api)
+- [Usage API](#usage-api)
+
+---
+
+## HTML API
+
+The HTML API allows you to scrape any webpage and get the HTML content.
+
+### Basic Request
 
 ```python
->>> from scrapingbee import ScrapingBeeClient
+from scrapingbee import ScrapingBeeClient
 
->>> client = ScrapingBeeClient(api_key='REPLACE-WITH-YOUR-API-KEY')
+client = ScrapingBeeClient(api_key='YOUR-API-KEY')
 
->>> response = client.get(
-    'https://www.scrapingbee.com/blog/', 
+response = client.html_api(
+    'https://www.scrapingbee.com',
     params={
-        # Block ads on the page you want to scrape	
-        'block_ads': False,
-        # Block images and CSS on the page you want to scrape	
-        'block_resources': True,
-        # Premium proxy geolocation
-        'country_code': '',
-        # Control the device the request will be sent from	
-        'device': 'desktop',
-        # Use some data extraction rules
-        'extract_rules': {'title': 'h1'},
-        # Use AI to extract data from the page
-        'ai_extract_rules': {'product_name': 'The name of the product', 'price': 'The price in USD'},
-        # Wrap response in JSON
-        'json_response': False,
-        # Interact with the webpage you want to scrape 
-        'js_scenario': {
-            "instructions": [
-                {"wait_for": "#slow_button"},
-                {"click": "#slow_button"},
-                {"scroll_x": 1000},
-                {"wait": 1000},
-                {"scroll_x": 1000},
-                {"wait": 1000},            
-            ]
-        },
-        # Use premium proxies to bypass difficult to scrape websites (10-25 credits/request)
-        'premium_proxy': False,
-        # Execute JavaScript code with a Headless Browser (5 credits/request)
-        'render_js': True,
-        # Return the original HTML before the JavaScript rendering	
-        'return_page_source': False,
-        # Return page screenshot as a png image
-        'screenshot': False,
-        # Take a full page screenshot without the window limitation
-        'screenshot_full_page': False,
-        # Transparently return the same HTTP code of the page requested.
-        'transparent_status_code': False,
-        # Wait, in miliseconds, before returning the response
-        'wait': 0,
-        # Wait for CSS selector before returning the response, ex ".title"
-        'wait_for': '',
-        # Set the browser window width in pixel
-        'window_width': 1920,
-        # Set the browser window height in pixel
-        'window_height': 1080
-    },
-    headers={
-        # Forward custom headers to the target website
-        "key": "value"
-    },
-    cookies={
-        # Forward custom cookies to the target website
-        "name": "value"
+        'render_js': False,
     }
 )
->>> response.text
-'<!DOCTYPE html><html lang="en"><head>...'
+
+print(response.content)
 ```
 
-ScrapingBee takes various parameters to render JavaScript, execute a custom JavaScript script, use a premium proxy from a specific geolocation and more. 
+### Making a POST request
 
-You can find all the supported parameters on [ScrapingBee's documentation](https://www.scrapingbee.com/documentation/).
+```python
+response = client.html_api(
+    'https://httpbin.org/post',
+    method='POST',
+    data={
+        'key': 'value'
+    }
+)
+```
 
-You can send custom cookies and headers like you would normally do with the requests library.
-
-## Auto-Mode
+### Auto-Mode
 
 With Auto-Mode, ScrapingBee picks the cheapest scraping configuration that successfully scrapes the page for you: it tries the cheaper options first and stops at the first one that works. You are charged only for the winning configuration (and 0 credits if every configuration fails).
 
@@ -105,8 +78,9 @@ With Auto-Mode, ScrapingBee picks the cheapest scraping configuration that succe
 >>> client = ScrapingBeeClient(api_key='REPLACE-WITH-YOUR-API-KEY')
 
 # Auto-Mode: ScrapingBee picks the cheapest config that works; you're charged only for the winning one.
->>> response = client.get(
+>>> response = client.html_api(
     'https://example.com',
+    method='GET',
     params={
         'mode': 'auto',
         # Optional: cap the credits a single request may cost (omit for uncapped).
@@ -125,51 +99,262 @@ Notes:
 - `max_cost` is optional and must be `>= 1`; omit it to leave the cost uncapped.
 - `mode=auto` cannot be combined with `render_js`, `premium_proxy`, or `stealth_proxy` (ScrapingBee chooses these for you). Sending them together returns a `400`.
 
-## Screenshot
+---
 
-Here a little exemple on how to retrieve and store a screenshot from the ScrapingBee blog in its mobile resolution.
+## Google Search API
+
+Scrape Google search results in real-time.
 
 ```python
->>> from scrapingbee import ScrapingBeeClient
-
->>> client = ScrapingBeeClient(api_key='REPLACE-WITH-YOUR-API-KEY')
-
->>> response = client.get(
-    'https://www.scrapingbee.com/blog/', 
+response = client.google_search(
+    search='web scraping tools',
     params={
-        # Take a screenshot
-        'screenshot': True,
-        # Specify that we need the full height
-        'screenshot_full_page': True,
-        # Specify a mobile width in pixel
-        'window_width': 375
+        'language': 'en',
+        'country_code': 'us',
+        'nb_results': 10
     }
 )
 
->>> if response.ok:
-        with open("./scrapingbee_mobile.png", "wb") as f:
-            f.write(response.content)
+print(response.json())
 ```
 
-## Using ScrapingBee with Scrapy
+---
 
-Scrapy is the most popular Python web scraping framework. You can easily [integrate ScrapingBee's API with the Scrapy middleware](https://github.com/ScrapingBee/scrapy-scrapingbee).
+## Fast Search API
 
+Lightweight Google search results in under a second.
+
+```python
+response = client.fast_search(
+    search='pizza in new york',
+    params={
+        'country_code': 'us',
+        'language': 'en',
+        'page': 1
+    }
+)
+
+print(response.json())
+```
+
+---
+
+## Amazon API
+
+Scrape Amazon search results, product details, and pricing.
+
+### Amazon Search
+
+```python
+response = client.amazon_search(
+    query='laptop',
+    params={
+        'domain': 'com',
+        'language': 'en',
+        'pages': 1
+    }
+)
+
+print(response.json())
+```
+
+### Amazon Product
+
+```python
+response = client.amazon_product(
+    query='B0D2Q9397Y',  # ASIN
+    params={
+        'domain': 'com'
+    }
+)
+
+print(response.json())
+```
+
+### Amazon Pricing
+
+```python
+response = client.amazon_pricing(
+    asin='B0DPDRNSXV',
+    params={
+        'domain': 'com',
+        'light_request': True
+    }
+)
+
+print(response.json())
+```
+
+---
+
+## Walmart API
+
+Scrape Walmart search results and product details.
+
+### Walmart Search
+
+```python
+response = client.walmart_search(
+    query='laptop',
+    params={
+        'sort_by': 'best_match',
+        'device': 'desktop'
+    }
+)
+
+print(response.json())
+```
+
+### Walmart Product
+
+```python
+response = client.walmart_product(
+    product_id='123456789',
+    params={
+        'device': 'desktop'
+    }
+)
+
+print(response.json())
+```
+
+---
+
+## YouTube API
+
+Scrape YouTube search results, video metadata, and subtitles.
+
+### YouTube Search
+
+```python
+response = client.youtube_search(
+    search='web scraping tutorial',
+    params={
+        'sort_by': 'relevance',
+        'type': 'video'
+    }
+)
+
+print(response.json())
+```
+
+### YouTube Metadata
+
+```python
+response = client.youtube_metadata(video_id='dQw4w9WgXcQ')
+print(response.json())
+```
+
+### YouTube Subtitles
+
+```python
+response = client.youtube_subtitles(
+    video_id='dQw4w9WgXcQ',
+    params={
+        'language': 'en',
+        'subtitle_origin': 'uploader_provided'
+    }
+)
+print(response.json())
+```
+
+---
+
+## ChatGPT API
+
+Use ChatGPT with optional web search.
+
+```python
+response = client.chatgpt(
+    prompt='What is web scraping?',
+    params={
+        'search': True,
+        'country_code': 'us'
+    }
+)
+
+print(response.json())
+```
+
+---
+
+## Gemini API
+
+Send prompts to Gemini and receive AI-generated responses.
+
+```python
+response = client.gemini(
+    prompt='Best programming languages for data science',
+    params={
+        'country_code': 'us',
+        'add_html': False
+    }
+)
+
+print(response.json())
+```
+
+---
+
+## Usage API
+
+Check your API credit usage.
+
+```python
+response = client.usage()
+print(response.json())
+# {
+#     "max_api_credit": 8000000,
+#     "used_api_credit": 1000023,
+#     "max_concurrency": 200,
+#     "current_concurrency": 1
+# }
+```
+
+---
+
+## Legacy Methods (Deprecated)
+
+The `get()` and `post()` methods are deprecated and will be removed in a future version. Please use `html_api()` instead.
+
+```python
+# Deprecated
+client.get(url, params={...})
+
+# Use instead
+client.html_api(url, method='GET', params={...})
+```
+
+## Screenshot
+
+Here is a little example on how to retrieve and store a screenshot from the ScrapingBee blog.
+
+```python
+from scrapingbee import ScrapingBeeClient
+
+client = ScrapingBeeClient(api_key='YOUR-API-KEY')
+
+response = client.html_api(
+    'https://www.scrapingbee.com/',
+    params={
+        'screenshot': True,
+        'screenshot_full_page': True,
+        'window_width': 375,
+    }
+)
+
+with open('screenshot.png', 'wb') as f:
+    f.write(response.content)
+```
 
 ## Retries
 
 The client includes a retry mechanism for 5XX responses.
 
 ```python
->>> from scrapingbee import ScrapingBeeClient
-
->>> client = ScrapingBeeClient(api_key='REPLACE-WITH-YOUR-API-KEY')
-
->>> response = client.get(
-    'https://www.scrapingbee.com/blog/', 
-    params={
-        'render_js': True,
-    },
-    retries=5
-)
+client.html_api(url, params={...}, retries=5)
 ```
+
+## Using ScrapingBee with Scrapy
+
+Scrapy is the most popular Python web scraping framework. You can easily [integrate ScrapingBee's API with the Scrapy middleware](https://github.com/ScrapingBee/scrapy-scrapingbee).
