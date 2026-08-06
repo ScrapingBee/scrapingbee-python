@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.1.1](https://github.com/ScrapingBee/scrapingbee-python/compare/v2.1.0...v2.1.1) (2026-08-06)
+
+### Improvement
+
+- Document Auto-Mode (`mode=auto`) support: ScrapingBee picks the cheapest scraping configuration that succeeds and charges only for the winning one. Read the credits charged from the `Spb-auto-cost` response header, and optionally cap the cost with `max_cost`. No client changes are required — these are pass-through query parameters.
+
 ## [2.1.0](https://github.com/ScrapingBee/scrapingbee-python/compare/v2.0.2...v2.1.0) (2026-07-20)
 
 ### Features
