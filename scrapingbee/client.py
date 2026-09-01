@@ -3,7 +3,7 @@ from requests.adapters import HTTPAdapter
 from typing_extensions import deprecated
 from urllib3.util import Retry
 
-from .utils import process_headers, process_params
+from .utils import DEFAULT_HEADERS, process_headers, process_params
 
 
 class ScrapingBeeClient:
@@ -41,8 +41,8 @@ class ScrapingBeeClient:
         retries: int | None = None,
         **kwargs
     ) -> Response:
-        """Core request method - adds api_key and makes the HTTP call."""
-        params["api_key"] = self.api_key
+        """Core request method - adds authentication and makes the HTTP call."""
+        headers = {**DEFAULT_HEADERS, **(headers or {}), "Authorization": f"Bearer {self.api_key}"}
 
         session = Session()
         if retries:
