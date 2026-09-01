@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.2.0](https://github.com/ScrapingBee/scrapingbee-python/compare/v2.1.1...v2.2.0) (2026-09-01)
+
+### Features
+
+- Header-based authorization: the client now sends the API key in the `Authorization: Bearer <api_key>` request header instead of the `api_key` query parameter, keeping the key out of URLs and server logs. All API endpoints support header auth (the API continues to accept the query parameter for older SDK versions); no code changes are needed — `ScrapingBeeClient(api_key=...)` works as before.
+- All requests now send the `ScrapingBee-Python/<version>` User-Agent (previously only HTML API requests did).
+
+### Documentation
+
+- Documented the complete request-parameter list for every API endpoint (HTML, Google Search, Fast Search, Amazon, Walmart, YouTube, ChatGPT, Gemini), including the `tag` parameter accepted by all endpoints and deprecated parameters that remain accepted.
+
 ## [2.1.1](https://github.com/ScrapingBee/scrapingbee-python/compare/v2.1.0...v2.1.1) (2026-08-06)
 
 ### Improvement
